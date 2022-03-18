@@ -44,6 +44,14 @@
           {{ favorite.length }}
         </span>
       </button>
+      <button type="button" class="btn btn-primary position-relative me-3">
+        購物車
+        <span
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+        >
+          {{ cart.carts.length }}
+        </span>
+      </button>
     </div>
   </nav>
 </template>
