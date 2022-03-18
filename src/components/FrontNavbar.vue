@@ -48,6 +48,7 @@
         購物車
         <span
           class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+          v-if="cart.carts.length > 0"
         >
           {{ cart.carts.length }}
         </span>
