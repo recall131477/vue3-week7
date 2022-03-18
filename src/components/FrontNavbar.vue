@@ -31,10 +31,19 @@
       </div>
       <form @submit.prevent="searchProducts">
         <div class="me-3">
-          <label for="search">關鍵字搜尋</label>
-          <input type="text" id="search" placeholder="搜尋" v-model="keyword" />
+          <label for="keyword">關鍵字搜尋</label>
+          <input type="text" id="keyword" placeholder="搜尋" v-model="keyword" />
         </div>
       </form>
+            <button type="button" class="btn btn-primary position-relative me-3">
+        我的最愛
+        <span
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+          v-if="favorite.length > 0"
+        >
+          {{ favorite.length }}
+        </span>
+      </button>
     </div>
   </nav>
 </template>
