@@ -93,6 +93,8 @@
 </template>
 
 <script>
+import emitter from '@/libs/emitter';
+
 export default {
   data() {
     return {
@@ -147,6 +149,7 @@ export default {
         .delete(url)
         .then((res) => {
           this.$messageState(res, status);
+          emitter.emit('get-cart');
           this.getCart();
           this.isLoadingItem = '';
         })
@@ -162,6 +165,7 @@ export default {
         .delete(url)
         .then((res) => {
           this.$messageState(res, status);
+          emitter.emit('get-cart');
           this.getCart();
         })
         .catch((err) => {

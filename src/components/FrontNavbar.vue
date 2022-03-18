@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
+    <div class="container-fluid mt-4 me-4">
       <router-link class="navbar-brand" to="/">午分之食</router-link>
       <button
         class="navbar-toggler"
@@ -108,7 +108,6 @@ export default {
   },
   mounted() {
     this.getProducts();
-    this.getCart();
     this.getFavorite();
     emitter.on('get-cart', () => {
       this.getCart();
@@ -116,6 +115,9 @@ export default {
     emitter.on('get-favorite', () => {
       this.getFavorite();
     });
+  },
+  created() {
+    this.getCart();
   },
 };
 </script>
