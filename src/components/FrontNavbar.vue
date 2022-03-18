@@ -35,6 +35,15 @@
           <input type="text" id="keyword" placeholder="搜尋" v-model="keyword" />
         </div>
       </form>
+      <button type="button" class="btn btn-primary position-relative me-3">
+        我的最愛
+        <span
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+          v-if="favorite.length > 0"
+        >
+          {{ favorite.length }}
+        </span>
+      </button>
     </div>
   </nav>
 </template>
@@ -79,7 +88,7 @@ export default {
     },
     // 取得 localStorage 資料
     getFavorite() {
-      this.favorite = JSON.parse(localStorage.getItem('favorite'));
+      this.favorite = JSON.parse(localStorage.getItem('favorite')) || [];
     },
     searchProducts() {
       this.$router.push({
