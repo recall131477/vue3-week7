@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import '@/assets/scss/tailwind.scss';
 
 // axios
 import axios from 'axios';

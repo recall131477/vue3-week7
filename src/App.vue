@@ -33,5 +33,6 @@ export default {
 
 <style lang="scss">
 @import 'bootstrap/scss/bootstrap';
+@import '@/assets/scss/all.scss';
 @import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css');
 </style>

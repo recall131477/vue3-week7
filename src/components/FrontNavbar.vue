@@ -25,6 +25,9 @@
             <router-link class="nav-link" to="/cart">購物車</router-link>
           </li>
           <li class="nav-item">
+            <router-link class="nav-link" to="/articles">部落格</router-link>
+          </li>
+          <li class="nav-item">
             <router-link class="nav-link" to="/admin/products">後台管理</router-link>
           </li>
         </ul>
@@ -122,3 +125,10 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+img {
+  height: 200px;
+  object-fit: cover;
+}
+</style>

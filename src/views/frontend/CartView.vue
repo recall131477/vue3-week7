@@ -86,14 +86,30 @@
             <td colspan="3" class="text-end">總計</td>
             <td class="text-end">{{ cart.total }}</td>
           </tr>
+          <tr v-if="isCoupon">
+            <td colspan="3" class="text-end">折扣後金額</td>
+            <td class="text-end">{{ cart.final_total }}</td>
+          </tr>
         </tfoot>
       </table>
+      <div class="d-flex justify-content-end align-items-center">
+        <div>
+          <label for="coupon">優惠券</label>
+          <input type="text" id="coupon" :disabled="isCoupon" v-model="couponCode" />
+        </div>
+        <button type="button" class="btn btn-success" :disabled="isCoupon" v-if="isCoupon">
+          已套用優惠券
+        </button>
+        <button type="button" class="btn btn-success" @click="openModal" v-else>領取優惠券</button>
+      </div>
     </div>
   </div>
+  <FrontCouponModal ref="frontCouponModal" @get-coupon="useCoupon"></FrontCouponModal>
 </template>
 
 <script>
 import emitter from '@/libs/emitter';
+import FrontCouponModal from '@/components/FrontCouponModal.vue';
 
 export default {
   data() {
@@ -101,9 +117,15 @@ export default {
       cart: {
         carts: [],
       },
+      couponCode: '',
       isLoadingItem: '',
       isLoading: false,
+      isCoupon: false,
+      status: '',
     };
+  },
+  components: {
+    FrontCouponModal,
   },
   methods: {
     // 取得購物車資料
@@ -114,6 +136,12 @@ export default {
         .get(url)
         .then((res) => {
           this.cart = res.data.data;
+          if (this.cart.final_total !== this.cart.total) {
+            this.isCoupon = true;
+            this.couponCode = 'double777';
+          } else {
+            this.isCoupon = false;
+          }
           this.isLoading = false;
         })
         .catch((err) => {
@@ -171,6 +199,31 @@ export default {
         .catch((err) => {
           this.$messageState(err.response, '錯誤訊息');
         });
+    },
+    // 領取優惠券
+    useCoupon() {
+      this.couponCode = 'double777';
+      this.isCoupon = true;
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/coupon`;
+      const data = {
+        code: this.couponCode,
+      };
+      this.$http
+        .post(url, { data })
+        .then((res) => {
+          if (res.data.success) {
+            console.log(res);
+            this.cart.final_total = res.data.data.final_total;
+            this.isCoupon = true;
+          }
+        })
+        .catch((err) => {
+          this.$messageState(err.response, '錯誤訊息');
+        });
+    },
+    openModal() {
+      // 打開 modal 並判斷執行動作
+      this.$refs.frontCouponModal.openCouponModal(); // 開啟新增、編輯優惠券
     },
   },
   mounted() {

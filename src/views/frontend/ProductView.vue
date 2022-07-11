@@ -44,6 +44,15 @@
           </tr>
         </tbody>
       </table>
+      <div v-if="filterProducts.length > 0">
+        <h3 class="text-center">相關產品</h3>
+        <ul class="row">
+          <li class="col-3" v-for="item in filterProducts" :key="item.id">
+            <img :src="item.imageUrl" alt="" />
+            {{ item.title }}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -54,6 +63,7 @@ import emitter from '@/libs/emitter';
 export default {
   data() {
     return {
+      products: [],
       product: [],
       isLoadingItem: '',
       isLoading: false,
@@ -61,13 +71,37 @@ export default {
   },
   inject: ['routerRefresh'],
   watch: {
-    $route: { // 網址變更時觸發
+    $route: {
+      // 網址變更時觸發
       handler() {
         this.routerRefresh();
       },
     },
   },
+  computed: {
+    // 過濾產品並顯示該系列相關產品
+    filterProducts() {
+      const { category, id } = this.product; // 解構取出 category 與 id
+      return this.products.filter(
+        (item) => item.category === category && item.id !== id,
+      );
+    },
+  },
   methods: {
+    // 取得所有產品資料
+    getProducts() {
+      this.isLoading = true;
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`;
+      this.$http
+        .get(url)
+        .then((res) => {
+          this.products = res.data.products;
+          this.isLoading = false;
+        })
+        .catch((err) => {
+          this.$messageState(err.response, '錯誤訊息');
+        });
+    },
     // 取得產品資料
     getProduct() {
       this.isLoading = true;
@@ -105,6 +139,7 @@ export default {
   },
   mounted() {
     this.getProduct();
+    this.getProducts();
   },
 };
 </script>
@@ -114,5 +149,8 @@ img {
   width: 100%;
   height: 100px;
   object-fit: cover;
+}
+li {
+  list-style: none;
 }
 </style>
